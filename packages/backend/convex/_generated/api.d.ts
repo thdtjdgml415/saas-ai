@@ -13,6 +13,8 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as lib_sentryFn from "../lib/sentryFn.js";
+import type * as sentry from "../sentry.js";
 import type * as users from "../users.js";
 
 /**
@@ -24,6 +26,8 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "lib/sentryFn": typeof lib_sentryFn;
+  sentry: typeof sentry;
   users: typeof users;
 }>;
 export declare const api: FilterApi<
