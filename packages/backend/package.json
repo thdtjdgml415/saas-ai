@@ -14,6 +14,7 @@
     "typescript": "latest"
   },
   "dependencies": {
+    "@sentry/node": "^10.5.0",
     "convex": "^1.25.4"
   }
 }
