@@ -51,28 +51,37 @@ export const sentryMutation = <Args extends PropertyValidators, Output>(
 };
 
 async function captureSentryException(
-  e: any,
+  e: unknown,
   ctx: QueryCtx | MutationCtx,
-  args: any
+  args: unknown
 ) {
-  if (!process.env.SENTRY_DSN) {
-    return;
-  }
+  try {
+    if (!process.env.SENTRY_DSN) {
+      return;
+    }
 
-  const identity = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity().catch(() => undefined);
+    const errorData = e instanceof ConvexError ? e.data : undefined;
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    const errorStack = e instanceof Error ? e.stack : undefined;
 
-  let errorData;
-  if (e instanceof ConvexError) {
-    errorData = e.data;
-  }
-
-  if ("scheduler" in ctx && ctx.scheduler) {
-    await ctx.scheduler.runAfter(0, internal.sentry.logSentryError, {
-      errorMessage: e.message,
-      errorStack: e.stack,
-      errorData: errorData,
-      identity: identity,
-      functionArgs: args,
-    });
+    if ("scheduler" in ctx && ctx.scheduler) {
+      await ctx.scheduler.runAfter(0, internal.sentry.logSentryError, {
+        errorMessage,
+        errorStack,
+        errorData,
+        identity,
+        functionArgs: args,
+      });
+    } else {
+      // QueryCtx 폴백: 스케줄러가 없으면 서버 로그로 남깁니다.
+      console.error("[sentryFn] Query error (scheduler unavailable)", {
+        errorMessage,
+        errorStack,
+        errorData,
+      });
+    }
+  } catch {
+    // 로깅 과정의 모든 오류는 삼켜 원래 예외를 가리지 않도록 합니다.
   }
 }
