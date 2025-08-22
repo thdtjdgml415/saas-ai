@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as lib_sentryFn from "../lib/sentryFn.js";
+import type * as public_contactSessions from "../public/contactSessions.js";
 import type * as sentry from "../sentry.js";
 import type * as users from "../users.js";
 
@@ -27,6 +28,7 @@ import type * as users from "../users.js";
  */
 declare const fullApi: ApiFromModules<{
   "lib/sentryFn": typeof lib_sentryFn;
+  "public/contactSessions": typeof public_contactSessions;
   sentry: typeof sentry;
   users: typeof users;
 }>;
