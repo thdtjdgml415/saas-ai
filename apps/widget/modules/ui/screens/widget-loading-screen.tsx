@@ -46,12 +46,14 @@ export const WidgetLoadingScreen = ({
 
     if (!organizationId) {
       setErrorMessage("유효한 조직 아이디가 아닙니다.");
+      setLoadingMessage(null);
       setScreen("error");
       return;
     }
-
+    let cancelled = false;
     validateOrganization({ organizationId })
       .then((result) => {
+        if (cancelled) return;
         if (result.valid) {
           setLoadingMessage("유효한 조직 아이디 입니다.");
           setOrganizationId(organizationId);
@@ -62,9 +64,14 @@ export const WidgetLoadingScreen = ({
         }
       })
       .catch(() => {
-        setErrorMessage("Unable to verify organization");
+        if (cancelled) return;
+        setErrorMessage("조직의 이름을 확인할 수 없습니다.");
+        setLoadingMessage(null);
         setScreen("error");
       });
+    return () => {
+      cancelled = true;
+    };
   }, [step, organizationId, validateOrganization]);
 
   const validateContactSession = useMutation(
