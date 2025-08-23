@@ -1,3 +1,7 @@
+import {
+  contactSessionIdAtomFamily,
+  organizationIdAtom,
+} from "@/modules/atom/widget-atoms";
 import { WidgetHeader } from "@/modules/ui/components/widget-header";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@workspace/backend/_generated/api";
@@ -11,6 +15,7 @@ import {
 } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
 import { useMutation } from "convex/react";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -19,10 +24,11 @@ const formSchema = z.object({
   email: z.string().email("유효한 이메일을 입력해주세요."),
 });
 
-// 일시적인 아이디
-const organizationId = "123";
-
 export const WidgetAuthScreen = () => {
+  const organizationId = useAtomValue(organizationIdAtom);
+  const setContactSessionId = useSetAtom(
+    contactSessionIdAtomFamily(organizationId || "")
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,7 +63,9 @@ export const WidgetAuthScreen = () => {
       metadata,
       organizationId,
     });
+
     console.log({ contactSessionId });
+    setContactSessionId(contactSessionId);
   };
 
   return (
