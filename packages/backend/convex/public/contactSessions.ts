@@ -40,3 +40,29 @@ export const create = mutation({
     return contactSessionId;
   },
 });
+
+export const validate = mutation({
+  args: {
+    contactSessionId: v.id("contactSessions"),
+  },
+  handler: async (ctx, args) => {
+    const contactSession = await ctx.db.get(args.contactSessionId);
+    if (!contactSession) {
+      return {
+        valid: false,
+        reason: "세션을 찾을 수 없음",
+      };
+    }
+    if (contactSession.expiresAt < Date.now()) {
+      return {
+        valid: false,
+        reason: "세션이 만료되었음",
+      };
+    }
+
+    return {
+      valid: true,
+      contactSession,
+    };
+  },
+});
