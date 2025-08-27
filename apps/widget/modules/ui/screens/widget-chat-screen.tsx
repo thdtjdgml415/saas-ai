@@ -36,6 +36,9 @@ import {
   AIInputTools,
 } from "@workspace/ui/components/ai/input";
 import { FormField, Form } from "@workspace/ui/components/form";
+import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
+import InfiniteScrollTrigger from "../components/infinite-scroll-trigger";
+import { DicebearAvatar } from "@workspace/ui/components/disebear-avatar";
 
 const formSchema = z.object({
   message: z.string().min(1, "메세지를 입력하세요."),
@@ -77,6 +80,19 @@ export const WidgetChatScreen = () => {
     { initialNumItems: 10 }
   );
 
+  const {
+    canLoadMore,
+    handleLoadMore,
+    isExhausted,
+    isLoadingFirstPage,
+    isLoadingMore,
+    topElementRef,
+  } = useInfiniteScroll({
+    status: messages.status,
+    loadMore: messages.loadMore,
+    loadSize: 10,
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -114,6 +130,12 @@ export const WidgetChatScreen = () => {
       </WidgetHeader>
       <AIConversation>
         <AIConversationContent>
+          <InfiniteScrollTrigger
+            ref={topElementRef}
+            canLoadMore={canLoadMore}
+            isLoadingMore={isLoadingMore}
+            onLoadMore={handleLoadMore}
+          />
           {toUIMessages(messages.results ?? []).map((messages) => {
             return (
               <AIMessage
@@ -122,9 +144,15 @@ export const WidgetChatScreen = () => {
                 key={messages.key}
               >
                 <AIMessageContent>
-                  {/* TODO: Add Avater component */}
                   <AIResponse>{messages.content}</AIResponse>
                 </AIMessageContent>
+                {messages.role === "assistant" && (
+                  <DicebearAvatar
+                    seed="assistant"
+                    size={32}
+                    badgeImageUrl="/logo.svg"
+                  />
+                )}
               </AIMessage>
             );
           })}
