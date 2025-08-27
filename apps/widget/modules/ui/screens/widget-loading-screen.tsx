@@ -9,7 +9,6 @@ import {
 } from "@/modules/atom/widget-atoms";
 import { WidgetHeader } from "@/modules/ui/components/widget-header";
 import { api } from "@workspace/backend/_generated/api";
-import { Id } from "@workspace/backend/_generated/dataModel";
 import { useAction, useMutation } from "convex/react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { LoaderIcon } from "lucide-react";
