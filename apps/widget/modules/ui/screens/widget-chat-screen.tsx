@@ -38,7 +38,7 @@ import {
 import { FormField, Form } from "@workspace/ui/components/form";
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
 import InfiniteScrollTrigger from "../components/infinite-scroll-trigger";
-import { DicebearAvatar } from "@workspace/ui/components/disebear-avatar";
+import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
 import { WidgetFooter } from "../components/widget-footer";
 
 const formSchema = z.object({
