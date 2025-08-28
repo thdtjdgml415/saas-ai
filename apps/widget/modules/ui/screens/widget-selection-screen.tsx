@@ -15,6 +15,7 @@ import { useAtomValue } from "jotai";
 import { useSetAtom } from "jotai";
 import { ChevronRightIcon, MessageSquareTextIcon } from "lucide-react";
 import { useState } from "react";
+import { WidgetFooter } from "../components/widget-footer";
 
 export const WidgetSelectionScreen = () => {
   const setScreen = useSetAtom(screenAtom);
@@ -74,6 +75,7 @@ export const WidgetSelectionScreen = () => {
           <ChevronRightIcon />
         </Button>
       </div>
+      <WidgetFooter />
     </>
   );
 };

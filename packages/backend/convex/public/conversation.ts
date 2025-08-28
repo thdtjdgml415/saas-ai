@@ -1,8 +1,63 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "../_generated/server";
 import { supportAgent } from "../system/ai/agents/supportAgent";
-import { saveMessage } from "@convex-dev/agent";
+import { MessageDoc, saveMessage } from "@convex-dev/agent";
 import { components } from "../_generated/api";
+import { paginationOptsValidator } from "convex/server";
+
+// 채팅 리스트 조회 (마지막 메세지 추가)
+export const getMany = query({
+  args: {
+    contactSessionId: v.id("contactSessions"),
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args) => {
+    const contactSession = await ctx.db.get(args.contactSessionId);
+
+    if (!contactSession || contactSession.expiresAt < Date.now()) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Invalid session",
+      });
+    }
+
+    const conversations = await ctx.db
+      .query("conversations")
+      .withIndex("by_contact_session_id", (q) =>
+        q.eq("contactSessionId", contactSession._id)
+      )
+      .order("desc")
+      .paginate(args.paginationOpts);
+
+    const conversationsWithLastMessage = await Promise.all(
+      conversations.page.map(async (conversation) => {
+        let lastMessage: MessageDoc | null = null;
+
+        const messages = await supportAgent.listMessages(ctx, {
+          threadId: conversation.threadId,
+          paginationOpts: { numItems: 1, cursor: null },
+        });
+
+        if (messages.page.length > 0) {
+          lastMessage = messages.page[0] ?? null;
+        }
+
+        return {
+          _id: conversation._id,
+          _creationTime: conversation._creationTime,
+          status: conversation.status,
+          threadId: conversation.threadId,
+          organizationId: conversation.organizationId,
+          lastMessage,
+        };
+      })
+    );
+    return {
+      ...conversations,
+      page: conversationsWithLastMessage,
+    };
+  },
+});
 
 export const getOne = query({
   args: {
@@ -15,7 +70,7 @@ export const getOne = query({
     if (!session || session.expiresAt < Date.now()) {
       throw new ConvexError({
         code: "UNAUTHORIZED",
-        message: "Invaild session",
+        message: "Invalid session",
       });
     }
 
@@ -55,7 +110,7 @@ export const create = mutation({
     if (!session || session.expiresAt < Date.now()) {
       throw new ConvexError({
         code: "UNAUTHORIZED",
-        message: "Invaild session",
+        message: "Invalid session",
       });
     }
 

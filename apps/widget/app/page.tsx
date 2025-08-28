@@ -9,6 +9,7 @@ interface Props {
   }>;
 }
 // http://localhost:3001/?organizationId=1234
+// SPA를 위한 디자인 패턴
 const Page = ({ searchParams }: Props) => {
   const { organizationId } = use(searchParams);
   return <WidgetView organizationId={organizationId} />;
