@@ -1,6 +1,7 @@
 import {
   contactSessionIdAtomFamily,
   organizationIdAtom,
+  screenAtom,
 } from "@/modules/atom/widget-atoms";
 import { WidgetHeader } from "@/modules/ui/components/widget-header";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +26,7 @@ const formSchema = z.object({
 });
 
 export const WidgetAuthScreen = () => {
+  const setScreen = useSetAtom(screenAtom);
   const organizationId = useAtomValue(organizationIdAtom);
   const setContactSessionId = useSetAtom(
     contactSessionIdAtomFamily(organizationId || "")
@@ -66,6 +68,7 @@ export const WidgetAuthScreen = () => {
 
     console.log({ contactSessionId });
     setContactSessionId(contactSessionId);
+    setScreen("selection");
   };
 
   return (
