@@ -37,7 +37,7 @@ import {
 } from "@workspace/ui/components/ai/input";
 import { FormField, Form } from "@workspace/ui/components/form";
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
-import InfiniteScrollTrigger from "../components/infinite-scroll-trigger";
+import InfiniteScrollTrigger from "@workspace/ui/components/infinite-scroll-trigger";
 import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
 import { WidgetFooter } from "../components/widget-footer";
 

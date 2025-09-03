@@ -9,6 +9,7 @@
  */
 
 import type * as lib_sentryFn from "../lib/sentryFn.js";
+import type * as private_conversations from "../private/conversations.js";
 import type * as public_contactSessions from "../public/contactSessions.js";
 import type * as public_conversation from "../public/conversation.js";
 import type * as public_messages from "../public/messages.js";
@@ -35,6 +36,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   "lib/sentryFn": typeof lib_sentryFn;
+  "private/conversations": typeof private_conversations;
   "public/contactSessions": typeof public_contactSessions;
   "public/conversation": typeof public_conversation;
   "public/messages": typeof public_messages;

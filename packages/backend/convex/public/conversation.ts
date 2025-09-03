@@ -6,6 +6,9 @@ import { components } from "../_generated/api";
 import { paginationOptsValidator } from "convex/server";
 
 // 채팅 리스트 조회 (마지막 메세지 추가)
+// 현재 로직은 기능적으로는 맞지만, N+1 문제 때문에 확장성 및 성능 저하의 우려가 있습니다. 제안된 대로 lastMessage 필드를 conversations 테이블에
+// 추가하여 비정규화하면 getMany 쿼리가 훨씬 단순해지고 성능도 크게 향상될 것입니다.
+
 export const getMany = query({
   args: {
     contactSessionId: v.id("contactSessions"),

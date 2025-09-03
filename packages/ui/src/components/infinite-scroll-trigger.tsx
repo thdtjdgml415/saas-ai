@@ -11,7 +11,7 @@ interface InfiniteScrollTriggerProps {
   ref: React.Ref<HTMLDivElement>;
 }
 
-const InfiniteScrollTrigger = ({
+export const InfiniteScrollTrigger = ({
   canLoadMore,
   isLoadingMore,
   loadMoreText = "Load More",
@@ -39,5 +39,3 @@ const InfiniteScrollTrigger = ({
     </div>
   );
 };
-
-export default InfiniteScrollTrigger;

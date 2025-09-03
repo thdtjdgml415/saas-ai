@@ -8,7 +8,9 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <AuthLoading>
-        <p>loading.....</p>
+        <div className="min-w-screen min-h-screen h-full flex flex-col flex-1 items-center justify-center ">
+          <div>loading.....</div>
+        </div>
       </AuthLoading>
       <Authenticated>{children}</Authenticated>
       <Unauthenticated>

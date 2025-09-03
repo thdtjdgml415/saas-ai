@@ -1,18 +1,18 @@
-import { ArrowRightCircleIcon, ArrowUpIcon, CheckIcon } from "lucide-react";
 import { cn } from "@workspace/ui/lib/utils";
+import { ArrowRightIcon, ArrowUpIcon, CheckIcon } from "lucide-react";
 
 interface ConversationIconsProps {
   status: "unresolved" | "escalated" | "resolved";
-  className: string;
+  className?: string;
 }
 
 const statusConfig = {
   unresolved: {
-    icon: CheckIcon,
-    bgColor: "bg-[#3FB62F]",
+    icon: ArrowRightIcon,
+    bgColor: "bg-destructive",
   },
-  escalated: { icon: ArrowRightCircleIcon, bgColor: "bg-destructive" },
-  resolved: { icon: ArrowUpIcon, bgColor: "bg-yellow-500" },
+  escalated: { icon: ArrowUpIcon, bgColor: "bg-yellow-300" },
+  resolved: { icon: CheckIcon, bgColor: "bg-[#3FB62F]" },
 } as const;
 
 export const ConversationStatusIcon = ({

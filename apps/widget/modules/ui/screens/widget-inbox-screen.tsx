@@ -16,7 +16,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { ArrowLeftIcon } from "lucide-react";
 import { WidgetFooter } from "../components/widget-footer";
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
-import InfiniteScrollTrigger from "../components/infinite-scroll-trigger";
+import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
 
 interface Props {
   organizationId: string;
