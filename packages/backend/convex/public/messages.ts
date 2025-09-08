@@ -4,6 +4,12 @@ import { action, query } from "../_generated/server";
 import { supportAgent } from "../system/ai/agents/supportAgent";
 import { paginationOptsValidator } from "convex/server";
 
+/**
+ * @purpose 고객의 메시지를 생성(전송)합니다.
+ * @description 고객이 채팅 위젯에서 메시지를 입력하고 보낼 때 호출됩니다.
+ *              이 메시지는 AI 에이전트에게 전달되어 응답 생성을 트리거합니다.
+ * @caller 채팅 위젯 (고객)
+ */
 export const create = action({
   args: {
     prompt: v.string(),
@@ -41,11 +47,7 @@ export const create = action({
         message: "Converstion resolved",
       });
     }
-    console.log(
-      "ai action",
-      { threadId: atgs.threadId },
-      { prompt: atgs.prompt }
-    );
+
     await supportAgent.generateText(
       ctx,
       { threadId: atgs.threadId },

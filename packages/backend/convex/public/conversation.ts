@@ -102,6 +102,12 @@ export const getOne = query({
 });
 
 // 채팅 생성
+/**
+ * @purpose 새로운 대화(conversation)를 생성합니다.
+ * @description `contactSession`이 생성된 후, 고객이 실제로 대화를 시작할 때 호출됩니다.
+ *              AI 에이전트와 연결되는 `threadId`를 생성하고, 초기 메시지를 보낸 후, 이 대화를 `contactSession`에 연결합니다.
+ * @caller 채팅 위젯 (고객)
+ */
 export const create = mutation({
   args: {
     organizationId: v.string(),
