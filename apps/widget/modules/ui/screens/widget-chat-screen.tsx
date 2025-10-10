@@ -37,9 +37,10 @@ import {
 } from "@workspace/ui/components/ai/input";
 import { FormField, Form } from "@workspace/ui/components/form";
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
-import InfiniteScrollTrigger from "@workspace/ui/components/infinite-scroll-trigger";
+
 import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
 import { WidgetFooter } from "../components/widget-footer";
+import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
 
 const formSchema = z.object({
   message: z.string().min(1, "메세지를 입력하세요."),

@@ -3,6 +3,12 @@ import { mutation } from "../_generated/server";
 
 const SESSION_DURATION_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * @purpose 새로운 연락 세션(contact session)을 생성합니다.
+ * @description 고객이 처음 채팅 위젯을 통해 이름과 이메일을 입력하고 대화를 시작할 때 호출됩니다.
+ *              이 API는 고객을 식별하고 일정 시간 동안 유지되는 세션을 만들어 `contactSessionId`를 반환합니다.
+ * @caller 채팅 위젯 (고객)
+ */
 export const create = mutation({
   args: {
     name: v.string(),
